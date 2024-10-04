@@ -9,3 +9,5 @@ _*DataFrame elegido*_
 
 _*Breve descripcion del trabajo*_
 _aca va una breve descripcion del trabajo_
+- [x] Hola
+- [ ] que onda
