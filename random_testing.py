@@ -1,4 +1,5 @@
 # ================================ DATA RANDOM =========================================
+
 # DataFrame con valores Null
 # ds = pd.read_csv('water_potability.csv', sep=',')
 # print(ds.describe())
