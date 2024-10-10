@@ -12,12 +12,14 @@ from sklearn.linear_model import LinearRegression
 
 # DataFrame sin valores Null
 df = pd.read_csv('water_potability.csv', sep=',')
-# ds = pd.read_csv('water_potability.csv', sep=',') # comparaciones
+
 # Reemplaza los nan por la mediana
 df.fillna(df.median(), inplace=True)
 
 
 # ============================================ Limpieza de Atipicos y Normalizacion ================================================== #
+# Creo que esto no es una buena idea.
+# No esta mal llenar los NaN con la mediana, pero si sacamos los valores atipicos perdemos mucha data.
 
 def atipicos_col(col_name):
     sample_ordenado = sorted(col_name)
@@ -58,10 +60,34 @@ def limpieza_col(data_frame):
 
     return data_frame
 
-# Consultar por esto
-# Columnas 'ph' y 'Trihalomethanes' vuelven todas en NaN, por eso las borro en la segunda linea de 'limpieza_col()'
+# Llamado a la funcion
 df = limpieza_col(df)
-# print('\nPOST LIMPIEZA\n',df.describe())
+
+# ============================================ Estandarizacion ================================================== #
+
+def estandarizacion(data_frame):
+    columnas = data_frame.columns.to_list()
+
+    for item in columnas:
+        # media
+        media = data_frame[item].mean()
+        # desviacion estandar
+        desv_std = data_frame[item].std()
+        # lista para guardar los valores escalados
+        valores_esc = []
+        for value in data_frame[item]:
+            # estandariza
+            valor_esc = (value - media) / desv_std
+            # guarda
+            valores_esc.append(valor_esc)
+        # mete toda la lista en la columna
+        data_frame[item] = valores_esc
+    
+    return data_frame
+
+df = estandarizacion(df)
+
+# =============================================================================================================== #
 
 # ====================================== ERROR^2 =========================================== #
 
@@ -135,32 +161,47 @@ x_train, x_test, y_train, y_test = train_test_split(inputs, outputs, test_size=1
 n = x_train.shape[0] # número de registros de entrenamiento
 
 # Red neuronal
-# pesos
-w_hidden_1 = np.random.rand(3,9)
-w_output_1 = np.random.rand(1,3)
+# Capa oculta 1 (9 entradas, 100 neuronas)
+w_hidden_1 = np.random.rand(100, 9)
+# Sesgos
+b_hidden_1 = np.random.rand(100, 1)
 
-# Como seria para ponerle 2 capas de neuronas?
-# w_hidden_2 = np.random.rand(,)
-# w_output_2 = np.random.rand(,)
+# Capa oculta 2 (100 entradas, 50 neuronas)
+w_hidden_2 = np.random.rand(50, 100)
+# Sesgos
+b_hidden_2 = np.random.rand(50, 1)
 
-# sesgos
-b_hidden = np.random.rand(3,1)
-b_output = np.random.rand(1,1)
+# Capa de salida (50 entradas, 1 neurona)
+w_output = np.random.rand(1, 50)
+# Sesgo
+b_output = np.random.rand(1, 1)
 
 # Funciones de Activacion
 relu = lambda x: np.maximum(x, 0)
 sigmoide = lambda x: 1 / (1 + np.exp(-x))
 
-def f_prop(X):
-    z1 = w_hidden_1 @ X + b_hidden
-    a1 = relu(z1)
-    z2 = w_output_1 @ a1 + b_output
-    a2 = sigmoide(z2)
-    return z1, a1, z2, a2
+# PREGUNTAR
+# Como aplicar las 2 capas de neuronas a el forward prop
+# Seria algo asi?
 
-test_predictions = f_prop(x_test.transpose())[3] # me interesa solo la capa de salida, A2
+def f_prop(X):
+    # Capa oculta 1
+    z1 = w_hidden_1 @ X + b_hidden_1
+    a1 = relu(z1)
+    
+    # Capa oculta 2
+    z2 = w_hidden_2 @ a1 + b_hidden_2
+    a2 = relu(z2)
+    
+    # Capa de salida
+    z3 = w_output @ a2 + b_output 
+    a3 = sigmoide(z3)
+
+    return z1, a1, z2, a2, z3, a3
+
+test_predictions = f_prop(x_test.transpose())[4] # me interesa solo la capa de salida, A2
 test_comparisons = np.equal((test_predictions >= .5).flatten().astype(int), y_test)
 accuracy = sum(test_comparisons.astype(int) / x_test.shape[0])
+
+# por algun motivo me da cero....
 print("ACCURACY: ", accuracy)
-
-
