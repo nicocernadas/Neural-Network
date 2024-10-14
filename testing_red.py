@@ -8,21 +8,18 @@ PREGUNTAS
 
 COSAS POR HACER
 
-    1) Terminar de limpiar el Data Frame.
+    1) Como mejorar el Accuracy (muy bajo, entre 38% y 40%).
 
 
 
 
 '''
-
 # ====================================== RED NEURONAL ================================================== #
 
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-
-df = pd.read_csv('water_potability.csv', sep=',')
-df.fillna(df.median(), inplace=True)
+from testing_analisis import df
 
 # Extraigo las columnas de entrada
 inputs = df.iloc[:, 0:9].values
@@ -37,15 +34,11 @@ n = x_train.shape[0] # número de registros de entrenamiento
 
 # Red neuronal
 # pesos
-w_hidden_1 = np.random.rand(3,9)
-w_output_1 = np.random.rand(1,3)
-
-# Como seria para ponerle 2 capas de neuronas?
-# w_hidden_2 = np.random.rand(,)
-# w_output_2 = np.random.rand(,)
+w_hidden_1 = np.random.rand(9,9)
+w_output_1 = np.random.rand(1,9)
 
 # sesgos
-b_hidden = np.random.rand(3,1)
+b_hidden = np.random.rand(9,1)
 b_output = np.random.rand(1,1)
 
 # Funciones de Activacion
