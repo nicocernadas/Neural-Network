@@ -1,19 +1,18 @@
+# ====================================================================================================== #
+
 '''
 PREGUNTAS
-
-    1) Datos con NaN: que hacemos? Por que no se puede poner la media en cada uno, arruinaria las muestras de las distintas
-    aguas, cambiando el valor final de salida. Los Valores con NaN se pueden procesar en una red igualmente? O les ponemos ceros
-
-    2) 
+    1) Asi como esta, el accuracy aca es el mismo que en la red de Scikit. Esto quiere decir que no se puede llegar a mucho mas?
+        No se cuantas cosas mas haria con los datos para no modificar las muestras.
 
 COSAS POR HACER
 
-    1) Como mejorar el Accuracy (muy bajo, entre 38% y 40%).
-
-
 
 
 '''
+
+# ====================================================================================================== #
+
 # ====================================== RED NEURONAL ================================================== #
 
 import numpy as np
@@ -76,9 +75,9 @@ def b_prop(z1, a1, z2, a2, X, Y):
 
     return dC_dW1, dC_dB1, dC_dW2, dC_dB2
 
-L = .05
+L = .01
 # Ejecutar descenso de gradiente
-for i in range(1_000_000):
+for i in range(200_000):
     # seleccionar aleatoriamente uno de los datos de entrenamiento
     idx = np.random.choice(n, 1, replace=False)
     X_sample = x_train[idx].transpose()
@@ -99,6 +98,7 @@ for i in range(1_000_000):
 
 
 # Accuracy
+# Entre 60-66
 test_predictions = f_prop(x_test.transpose())[3] # me interesa solo la capa de salida, A2
 test_comparisons = np.equal((test_predictions >= .5).flatten().astype(int), y_test)
 accuracy = sum(test_comparisons.astype(int) / x_test.shape[0])
