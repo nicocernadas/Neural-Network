@@ -136,6 +136,10 @@
 # print("ACCURACY: ", accuracy)
 # ======================================================================================
 # graficos =============================================================================
+# import pandas as pd
+# import matplotlib.pyplot as plt
+# from sklearn.linear_model import LinearRegression
+
 # def regresion_lin(df, column):
 #     plt.figure(figsize=(8, 5))
     
@@ -218,10 +222,9 @@
 
 # def limpieza_col(data_frame):
 #     columnas = data_frame.columns.to_list()
-#     del columnas[0], columnas[6]
 #     atipicos = 0
 
-#     for item in columnas:
+#     for item in columnas[:-1]:
 #         atipicos = atipicos_col(data_frame[item])
 #         for x in atipicos:
 #             data_frame.loc[data_frame[item] == x, item] = data_frame[item].median() # Los atipicos se llenan con la mediana
