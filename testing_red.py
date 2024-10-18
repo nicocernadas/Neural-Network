@@ -1,9 +1,8 @@
 # ====================================================================================================== #
 
 '''
-PREGUNTAS
-    1) Asi como esta, el accuracy aca es el mismo que en la red de Scikit. Esto quiere decir que no se puede llegar a mucho mas?
-        No se cuantas cosas mas haria con los datos para no modificar las muestras.
+PREGUNTAS PARA LOS PROFES 😎🤓
+    1) Vamos a ir poniendo flechitas en el codigo <- , si hacen ctrl + f y buscan eso las van a encontrar :)
 
 COSAS POR HACER
     1) Relleno en los NANS no potables con la media de los no potables. Idem para los potables
@@ -19,17 +18,12 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import testing_analisis as ta
-# from testing_analisis import df as df
 
 df= pd.read_csv('water_potability.csv', sep=',')
 print(df.describe())
-# df.fillna(df.median(), inplace=True)
 
-# Aca da rarisimo, a veces 0.129, 0.0, 0.9999
-# Sin el * 2 - 1, con esto se va a 0.0 o 0.11
 # df = ta.normalizacion(df)
 
-# Este directamente da todo bajo, 0.157, 0.108, 0.08
 # df = ta.estandarizacion(df)
 
 # Extraigo las columnas de entrada
@@ -38,7 +32,6 @@ outputs = df.iloc[:, -1].values
 
 # Conjuntos de entrenamiento y prueba
 x_train, x_test, y_train, y_test = train_test_split(inputs, outputs, test_size=1/3)
-print(y_train)
 
 #shape retorna una tupla con las dimensiones de la matriz = (filas, columnas).
 # por lo que shape[0], nos retorna las filas de la matriz.
@@ -112,6 +105,7 @@ for i in range(200_000):
 
 # Accuracy
 test_predictions = f_prop(x_test.transpose())[3]
+# print(test_predictions) <- aca tenemos valores 'nan'... Si se imprime en el jupiter de la unidad 6 son valores entre 0-1
 test_comparisons = np.equal((test_predictions >= .5).flatten().astype(int), np.array(y_test >= .5).astype(int))
 accuracy = sum(test_comparisons.astype(int) / x_test.shape[0])
 print("TEST ACCURACY: ", accuracy)
