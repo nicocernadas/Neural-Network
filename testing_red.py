@@ -6,8 +6,8 @@ PREGUNTAS
         No se cuantas cosas mas haria con los datos para no modificar las muestras.
 
 COSAS POR HACER
-
-
+    1) Relleno en los NANS no potables con la media de los no potables. Idem para los potables
+    2) revisar columnas con datos muy atipicos y nan (tirar filas o columans)
 
 '''
 
@@ -18,7 +18,19 @@ COSAS POR HACER
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from testing_analisis import df
+import testing_analisis as ta
+# from testing_analisis import df as df
+
+df= pd.read_csv('water_potability.csv', sep=',')
+print(df.describe())
+# df.fillna(df.median(), inplace=True)
+
+# Aca da rarisimo, a veces 0.129, 0.0, 0.9999
+# Sin el * 2 - 1, con esto se va a 0.0 o 0.11
+# df = ta.normalizacion(df)
+
+# Este directamente da todo bajo, 0.157, 0.108, 0.08
+# df = ta.estandarizacion(df)
 
 # Extraigo las columnas de entrada
 inputs = df.iloc[:, 0:9].values
@@ -26,12 +38,14 @@ outputs = df.iloc[:, -1].values
 
 # Conjuntos de entrenamiento y prueba
 x_train, x_test, y_train, y_test = train_test_split(inputs, outputs, test_size=1/3)
+print(y_train)
 
 #shape retorna una tupla con las dimensiones de la matriz = (filas, columnas).
 # por lo que shape[0], nos retorna las filas de la matriz.
 n = x_train.shape[0] # número de registros de entrenamiento
 
 # Red neuronal
+np.random.seed(0)
 # pesos
 w_hidden_1 = np.random.rand(9,9)
 w_output_1 = np.random.rand(1,9)
@@ -96,10 +110,13 @@ for i in range(200_000):
     w_output_1 -= L * dW2
     b_output -= L * dB2
 
-
 # Accuracy
-# Entre 60-66
-test_predictions = f_prop(x_test.transpose())[3] # me interesa solo la capa de salida, A2
-test_comparisons = np.equal((test_predictions >= .5).flatten().astype(int), y_test)
+test_predictions = f_prop(x_test.transpose())[3]
+test_comparisons = np.equal((test_predictions >= .5).flatten().astype(int), np.array(y_test >= .5).astype(int))
 accuracy = sum(test_comparisons.astype(int) / x_test.shape[0])
-print("ACCURACY: ", accuracy)
+print("TEST ACCURACY: ", accuracy)
+
+# test_predictions = f_prop(x_train.transpose())[3]
+# test_comparisons = np.equal((test_predictions >= .5).flatten().astype(int), np.array(y_train >= .5).astype(int))
+# accuracy = sum(test_comparisons.astype(int) / x_test.shape[0])
+# print("TRAIN ACCURACY: ", accuracy)
