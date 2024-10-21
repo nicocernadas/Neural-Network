@@ -10,6 +10,9 @@ PREGUNTAS PARA LOS PROFES 😎🤓
 COSAS POR HACER
     1) Relleno en los NANS no potables con la media de los no potables. Idem para los potables (✅)
     2) revisar columnas con datos muy atipicos y nan (tirar filas o columans) (✅)
+    3) En el archivo /.graficos.py, si lo corren se grafican todas las columnas de una, y la tabla de correlacion
+        tambien, pero los graficos son bastante fuleros
+
 
 '''
 
