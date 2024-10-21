@@ -193,44 +193,35 @@
 # print(f"suma de cuadrados = {sum_of_squares}")
 # =============================================================================================
 # limpieza de atipicos ========================================================================
-# def atipicos_col(col_name):
-#     sample_ordenado = sorted(col_name)
+# def atipicos_col(values_list):
+#     sample_ordenado = sorted(values_list)
 #     n = len(sample_ordenado)
 
-#     # Cuartiles
 #     Q1 = sample_ordenado[n // 4]
 #     Q2 = (sample_ordenado[n // 2 - 1] + sample_ordenado[n // 2]) / 2
 #     Q3 = sample_ordenado[3 * n // 4]
 #     iqr = Q3 - Q1
 
-#     # print(f'Cuantiles de {col_name.values}')
-#     # print('Valores mayores a: ', Q3 + (1.5 * iqr), ' => Son atipicos')
-#     # print('Valores menores a: ',Q1 - (1.5 * iqr), ' => Son atipicos')
-#     # print('\n')
+#     # Esto ahora cambio un poco, ya no guardo los atipicos, se van a guardar las posiciones
+#     indices_atipicos = []
 
-#     atipicos = []
-
-#     # Calcula los valores atipicos
-#     for x in sample_ordenado:
+#     # Esto retorna por cada lista, el indice (index) y el valor (x)
+#     for index, x in enumerate(sample_ordenado):
 #         if (x > Q3 + (1.5 * iqr) or (x < Q1 - (1.5 * iqr))):
-#             atipicos.append(x)
-#         else:
-#             pass
-    
-#     # Retorna la lista ordenada para despues armar el nuevo dataframe.
-#     return atipicos
+#             indices_atipicos.append(index)
+
+#     return indices_atipicos
 
 # def limpieza_col(data_frame):
 #     columnas = data_frame.columns.to_list()
-#     atipicos = 0
 
 #     for item in columnas[:-1]:
-#         atipicos = atipicos_col(data_frame[item])
-#         for x in atipicos:
-#             data_frame.loc[data_frame[item] == x, item] = data_frame[item].median() # Los atipicos se llenan con la mediana
+#         # Ahora se pasa cada columna como una lista
+#         indices_atipicos = atipicos_col(data_frame[item].to_list())
+        
+#         # Si no esta vacia...
+#         if indices_atipicos:
+#             data_frame = data_frame.drop(data_frame.index[indices_atipicos])
 
 #     return data_frame
-
-# # Llamado a la funcion
-# df = limpieza_col(df)
 # ==============================================================================================
