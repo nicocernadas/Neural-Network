@@ -1,4 +1,8 @@
 ## Trabajo Practico - Matematica III
+### PROFES!
+
+HAY CONSULTAS EN ./TESTING_RED, ./TESTING_ANALISIS Y ./PRUEBAS, BUSCAR LAS '<-'
+
 ### Docentes: Tomás Prudente y Josefina Bompensieri
 _*Integrantes del grupo*_
 - Catalina Correa
