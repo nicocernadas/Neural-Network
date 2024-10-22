@@ -26,10 +26,11 @@ df = ta.limpieza_col(df)
 def scattered(df, last_col):
     columns = df.columns.to_list()
     for item in columns[:last_col]:
-        fit = LinearRegression().fit(df.index.values.reshape(-1, 1), df[item])
-        m = fit.coef_.flatten()
-        b = fit.intercept_.flatten()
-        plt.plot(df.index, m*df[item]+b, color='red')
+        # Esta rara la regresion esta, es como si estuviera recta en el 0.5 <-
+        # fit = LinearRegression().fit(df.index.values.reshape(-1, 1), df[item])
+        # m = fit.coef_.flatten()
+        # b = fit.intercept_.flatten()
+        # plt.plot(df.index, m*df[item]+b, color='red')
         plt.xlabel('Index')
         plt.ylabel(f'Column \'{item}\'')
         plt.xticks(rotation=45, horizontalalignment='center')
@@ -44,8 +45,9 @@ def scattered(df, last_col):
 def histograms(df, last_col):
     columns = df.columns.to_list()
     for item in columns[:last_col]:
-        plt.xlabel('Index')
-        plt.ylabel(f'Column \'{item}\'')
+        plt.xlabel(f'Column \'{item}\'')
+        # Aca por que aparece hasta el 700? <-
+        plt.ylabel('Index')
         plt.xticks(rotation=45, horizontalalignment='center')
         plt.minorticks_on()
         plt.grid()
