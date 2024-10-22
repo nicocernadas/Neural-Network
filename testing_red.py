@@ -106,9 +106,9 @@ def b_prop(z1, a1, z2, a2, X, Y):
 
 # =========================================================== EJECUCION ==================================================================== #
 
-L = .001
+L = .0001
 # Ejecutar descenso de gradiente
-for i in range(500_000):
+for i in range(1_000_000):
     # seleccionar aleatoriamente uno de los datos de entrenamiento
     idx = np.random.choice(n, 1, replace=False)
     X_sample = x_train[idx].transpose()
