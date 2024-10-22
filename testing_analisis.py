@@ -14,16 +14,17 @@ df = pd.read_csv('water_potability.csv', sep=',')
 # ============================================ Normalizacion ================================================== #
 
 def normalizacion(data_frame):
-    columnas = data_frame.columns.to_list()
+    new_df = data_frame.copy() # <-
+    columnas = new_df.columns.to_list()
     new_val = []
     for item in columnas[:-1]:
-        max_value = data_frame[item].max()
-        for value in data_frame[item]:   
+        max_value = new_df[item].max()
+        for value in new_df[item]:   
             new_val.append(value/max_value)
-        data_frame[item] = new_val
+        new_df[item] = new_val
         new_val.clear()
     
-    return data_frame
+    return new_df
 
 # =============================================================================================================== #
 
@@ -53,37 +54,38 @@ def estandarizacion(data_frame):
 
 # ============================================ Atipicos ================================================== #
 
-def atipicos_col(values_list):
-    sample_ordenado = sorted(values_list)
-    n = len(sample_ordenado)
-
-    Q1 = sample_ordenado[n // 4]
-    Q2 = (sample_ordenado[n // 2 - 1] + sample_ordenado[n // 2]) / 2
-    Q3 = sample_ordenado[3 * n // 4]
+# NUEVO! <- El anterior hacia cualquier cosa
+def atipicos(valores_columna):
+    ordered = sorted(valores_columna)
+    n = len(valores_columna)
+    Q1 = ordered[n // 4]
+    Q2 = (ordered[n // 2 - 1] + ordered[n // 2]) / 2
+    Q3 = ordered[3 * n // 4]
     iqr = Q3 - Q1
+    # print('Max value: ', Q3 + (1.5 * iqr))
+    # print('Min value: ', Q1 - (1.5 * iqr))
+    # print('\n')
+    # Entonces lo que quiero hacer es: Primero identificar los atipicos. Despues buscar esos atipicos en el dataframe, y eliminarlos. NO se hace con el indice xq son indices dis-
+    # tintos, la columna no esta ordenada, 'ordered' si.
+    values = []
+    for value in ordered:
+        if ((value > Q3 + (1.5 * iqr)) or (value < Q1 - (1.5 * iqr))):
+            values.append(value)
+    return values
 
-    # Esto ahora cambio un poco, ya no guardo los atipicos, se van a guardar las posiciones
-    indices_atipicos = []
 
-    # Esto retorna por cada lista, el indice (index) y el valor (x)
-    for index, x in enumerate(sample_ordenado):
-        if (x > Q3 + (1.5 * iqr) or (x < Q1 - (1.5 * iqr))):
-            indices_atipicos.append(index)
-
-    return indices_atipicos
-
-def limpieza_col(data_frame):
-    columnas = data_frame.columns.to_list()
-
+def limpieza(data_frame):
+    new_df = data_frame.copy()
+    columnas = new_df.columns.to_list()
     for item in columnas[:-1]:
-        # Ahora se pasa cada columna como una lista
-        indices_atipicos = atipicos_col(data_frame[item].to_list())
-        
-        # Si no esta vacia...
-        if indices_atipicos:
-            data_frame = data_frame.drop(data_frame.index[indices_atipicos])
-
-    return data_frame
+        indices = []
+        valores_at = atipicos(new_df[item].to_list())
+        for value in valores_at:
+            # Guarda en la lista los indices de las filas que sean iguales al value
+            indices.append(new_df[new_df[item] == value].index[0])
+        # Y despues las tira todas a la bosta
+        new_df = new_df.drop(indices)
+    return new_df
 
 # =============================================================================================================== #
 
@@ -94,8 +96,9 @@ def limpieza_col(data_frame):
 # Recibe el dataframe, la columna y el valor que te quieras quedar
 # Devuelve el nuevo Dataframe (copia modificada, a menos que se pase inplace=true)
 def descarte(data_frame, columna, dato):
-    indexes = data_frame[data_frame[columna] != dato].index
-    return data_frame.drop(indexes)
+    new_df = data_frame.copy()
+    indexes = new_df[new_df[columna] != dato].index
+    return new_df.drop(indexes)
 
 # =============================== MEDIANAS DE UN DATAFRAME ========================================= #
 
@@ -111,20 +114,23 @@ def medians(data_frame):
 # ========================================== CARGA DE MEDIANAS EN NANS ========================================== #
 
 def carga_nans(data_frame, data_ceros, data_unos):
-    columnas = data_frame.columns.to_list()
+    # Aca por las dudas hago lo mismo, igual se lo voy a asignar al original
+    new_df = data_frame.copy()
+    columnas = new_df.columns.to_list()
     # Esto devuelve:
     # index = indice de la fila
     # fila = todos los datos de la fila en un [[formato]]
-    for index, fila in data_frame.iterrows():
+    for index, fila in new_df.iterrows():
         # Y por cada fila del dataframe, itero en las columnas
         for i in range(9):
             # Cuando i = 0 > fila['ph'], cuando i = 1 > fila['Hardness']
             if math.isnan(fila.iloc[i]) and fila.iloc[9] == 0:
-                data_frame.loc[index, columnas[i]] = data_ceros[columnas[i]].median()
+                new_df.loc[index, columnas[i]] = data_ceros[columnas[i]].median()
             elif math.isnan(fila.iloc[i]) and fila.iloc[9] == 1:
-                data_frame.loc[index, columnas[i]] = data_unos[columnas[i]].median()
+                new_df.loc[index, columnas[i]] = data_unos[columnas[i]].median()
+    return new_df
 
 # ================================================================================================================= #
-    
+
 
 
