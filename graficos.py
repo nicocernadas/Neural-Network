@@ -1,51 +1,67 @@
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 import seaborn as sns
 import testing_analisis as ta
 
-df = pd.read_csv('./water_potability.csv', sep=',')
+'''
+    Hacer la relacion de Pearson
+
+'''
+
+df_csv = pd.read_csv('./water_potability.csv', sep=',')
+df_csv.fillna(df_csv.median(), inplace=True)
+df = df_csv.copy()
 df_ceros = ta.descarte(df, 'Potability', 0)
 df_unos = ta.descarte(df, 'Potability', 1)
 ta.carga_nans(df, df_ceros, df_unos)
+df = ta.estandarizacion(df)
 df = ta.normalizacion(df)
 df = ta.limpieza_col(df)
 
-def regresion_lin(df, column): # <- Si corren este archivo de una les van a saltar todos los graficos, si los van cerrando aparecen los proximos
-    plt.figure(figsize=(8, 5))
-    
-    # Todas excepto potabilidad
-    data = df[[column, 'Potability']]
-    X = data['Potability'].values.reshape(-1, 1)
-    y = data[column].values
-    
-    # Arma la regresion
-    model = LinearRegression()
-    model.fit(X, y)
-    y_pred = model.predict(X)
-    
-    # Puntos
-    plt.scatter(X, y, color='blue', label='Data')
-    
-    # Regresion lineal
-    plt.plot(X, y_pred, color='red', label='Linear Regression')
-    
-    # Titulos y Ejes
-    plt.title(f'{column} contra Potability')
-    plt.xlabel('Potability')
-    plt.ylabel(column)
-    
+# ================================== GRAFICOS CON EL DATA FRAME SIN TRATAR ========================================== #
+
+# Graficos de dispersion de los datos
+def scattered(df, last_col):
+    columns = df.columns.to_list()
+    for item in columns[:last_col]:
+        fit = LinearRegression().fit(df.index.values.reshape(-1, 1), df[item])
+        m = fit.coef_.flatten()
+        b = fit.intercept_.flatten()
+        plt.plot(df.index, m*df[item]+b, color='red')
+        plt.xlabel('Index')
+        plt.ylabel(f'Column \'{item}\'')
+        plt.xticks(rotation=45, horizontalalignment='center')
+        plt.minorticks_on()
+        plt.grid()
+        plt.title('PLOT PER COLUMN')
+        plt.scatter(df.index, df[item], label=item.upper(), color='slateblue', marker='.')
+        plt.legend()
+        plt.show()
+
+# Histogramas de los datos
+def histograms(df, last_col):
+    columns = df.columns.to_list()
+    for item in columns[:last_col]:
+        plt.xlabel('Index')
+        plt.ylabel(f'Column \'{item}\'')
+        plt.xticks(rotation=45, horizontalalignment='center')
+        plt.minorticks_on()
+        plt.grid()
+        plt.title('PLOT PER COLUMN')
+        plt.hist(df[item], bins=15, color='slateblue', edgecolor='black', label=item.upper())
+        plt.legend()
+        plt.show()
+
+# Matriz de correlacion
+def matrix_corr(df):
+    plt.figure(figsize=(10, 8))
+    matriz_corr = df.corr()
+    # Colores para la grafica de correlacion -> https://matplotlib.org/stable/users/explain/colors/colormaps.html
+    sns.heatmap(matriz_corr, annot=True, cmap='inferno', linewidths=0.3)
+    plt.title('Correlation Matrix')
     plt.show()
 
-# Esto solo itera para printear todas juntas
-ploteo_total = df.columns[:-1]
-for column in ploteo_total:
-    regresion_lin(df, column)
+# ================================================================================================================= #
 
-plt.figure(figsize=(10, 8))
-matriz_corr = df.corr()
-
-# Colores para la grafica de correlacion -> https://matplotlib.org/stable/users/explain/colors/colormaps.html
-sns.heatmap(matriz_corr, annot=True, cmap='inferno', linewidths=0.3)
-plt.title('Matriz de Correlacion')
-plt.show()
