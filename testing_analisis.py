@@ -30,25 +30,50 @@ def normalizacion(data_frame):
 
 # ============================================ Estandarizacion ================================================== #
 
+# NUEVO! <- Estandarizacion
+# Estandarizacion
 def estandarizacion(data_frame):
+    new_df = data_frame.copy()
     columnas = data_frame.columns.to_list()
-
     for item in columnas[:-1]:
         # media
-        media = data_frame[item].mean()
+        media = new_df[item].mean()
         # desviacion estandar
-        desv_std = data_frame[item].std()
+        desv_std = new_df[item].std()
         # lista para guardar los valores escalados
         valores_esc = []
-        for value in data_frame[item]:
+        for value in new_df[item]:
             # estandariza
-            valor_esc = ((value - media) / desv_std) 
+            val = ((value - media) / desv_std) 
             # guarda
-            valores_esc.append(valor_esc)
+            valores_esc.append(val)
         # mete toda la lista en la columna
-        data_frame[item] = valores_esc
+        new_df[item] = valores_esc
     
-    return data_frame
+    return new_df
+
+# NUEVO! <- Estandarizacion Robusta 🦾
+# Esto se tiene que llamar una vez que no haya NaNs.
+def estandarizacion_robusta(data_frame):
+    new_df = data_frame.copy()
+    columnas = data_frame.columns.to_list()
+    iqr = 0
+    for item in columnas[:-1]:
+        # media
+        iqr = atipicos(new_df[item].to_list())[1]
+        # desviacion estandar
+        desv_std = new_df[item].std()
+        # lista para guardar los valores escalados
+        valores_esc = []
+        for value in new_df[item]:
+            # estandariza
+            val = ((value - iqr) / desv_std) 
+            # guarda
+            valores_esc.append(val)
+        # mete toda la lista en la columna
+        new_df[item] = valores_esc
+    
+    return new_df
 
 # =============================================================================================================== #
 
