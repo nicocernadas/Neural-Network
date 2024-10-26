@@ -4,6 +4,8 @@ import seaborn as sns
 from sklearn.linear_model import LinearRegression
 import math
 
+df = pd.read_csv('card_transdata.csv', sep=',')
+
 # ============================================== SCRIPT DE FUNCIONES ===================================================== #
 
 # Funcion de descarte
@@ -124,6 +126,16 @@ def estandarizacion_robusta(data_frame):
     
     return new_df
 
+def borrador_samples(data_frame):
+    new_df = data_frame.copy()
+    indices = []
+    for index,value in new_df.iterrows():
+        if new_df['fraud'][index] == 0:
+            indices.append(index)
+        if (index == 900_000):
+            newnew_df = new_df.drop(indices)
+            return newnew_df
+
 # ============================================================================================================================ #
 
 # ============================================== GRAFICOS ===================================================== #
@@ -155,13 +167,16 @@ def boxplot(data_frame):
 def histograms(df, last_col):
     columns = df.columns.to_list()
     for item in columns[:last_col]:
+        media = df[item].mean()
+        desv_est = df[item].std()
         plt.xlabel(f'Column \'{item}\'')
         plt.ylabel('Index')
         plt.xticks(rotation=45, horizontalalignment='center')
         plt.minorticks_on()
         plt.grid()
         plt.title('PLOT PER COLUMN')
-        plt.hist(df[item], bins=10, color='slateblue', edgecolor='black', label=item.upper())
+        cont, x, barras = plt.hist(df[item], bins=10, color='slateblue', edgecolor='black', label=item.upper())
+        plt.plot(x, 1/(desv_est*math.sqrt(2*math.pi)) * math.exp(-0.5*((x - media)/desv_est)**2), linewidth=1, color="purple")
         plt.legend()
         plt.show()
 
@@ -183,7 +198,7 @@ def pplot(data_frame):
 # Grafico del entrenamiento de la red (test/train)
 def grafico_acc(L, train_l, test_l):
     fmt_train = {
-        'color': 'tab:blue',
+        'color': 'tab:red',
         'ls': 'solid',
         'lw': 3,
     }
@@ -208,6 +223,3 @@ def grafico_acc(L, train_l, test_l):
     plt.show()
 
 # ============================================================================================================= #
-
-
-
