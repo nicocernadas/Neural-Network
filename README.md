@@ -8,19 +8,19 @@
 ### _**Breve descripcion del trabajo realizado**_
 > En este trabajo práctico se desarrolló una red neuronal para la predicción de la potabilidad del agua, utilizando como base un conjunto de datos proporcionado en un archivo CSV titulado ['Water Potability'](water_potability.csv).
 
-> El objetivo fue entrenar el modelo para clasificar si el agua es potable o no, basado en las características proporcionadas. El proceso comenzó con la limpieza y preparación de los datos. Se manejaron valores ausentes (NaN) y outliers en las diferentes columnas, sustituyendo estos valores con la mediana de cada característica para asegurar un entrenamiento más estable. 
+> Tambien desarrollamos una red para un set de datos que predicen si una transaccion de una tarjeta de credito fue o no fraudulenta. Este CSV se titula ['Card Transactions'](card_transdata.csv).
+
+> El objetivo fue entrenar ambos modelos para clasificar sus respectivas salidas, basado en las características proporcionadas. El proceso comenzó con la limpieza y preparación de los datos. Se manejaron valores ausentes (NaN) y outliers en las diferentes columnas, sustituyendo estos valores con la mediana de cada característica cuando es necesario, para asegurar un entrenamiento más estable.
 
 -
 
 -
 
-### _**Version 25/11**_
+### _**Version 26/10**_
 
-    Muchas cosas nuevas. Estandarizacion de datos, graficos de entrenamiento y testeo de 
-    la red, red neuronal de scikit learn, funcion de estandarizacion robusta (en testeo)
+    Nuevo! Ahora hay 2 Data Frames 😎. El de la potabilidad del agua anterior, con un maximo de 60-63% de accuracy, y el nuevo Data Frame de Fraudes a la hora de hacer transacciones con tarjetas de credito, con un accuracy del 96-98%.
 
-    La red parece no poder llegar a mucho mas porcentaje del que ya alcanza (alrededor del 68-72%), 
-    los datos fueron tratados de diversas maneras, con diversas funciones, y en distinto orden
+    Cada uno tiene su propio Jupyter, y van a tener sus respectivas Tesis. Hay redes de ScikitLearn y TensorFlow para ambos sets.
 
 
 
