@@ -132,7 +132,7 @@ def borrador_samples(data_frame):
     for index,value in new_df.iterrows():
         if new_df['fraud'][index] == 0:
             indices.append(index)
-        if (index == 900_000):
+        if (index == 850_000):
             newnew_df = new_df.drop(indices)
             return newnew_df
 
@@ -141,9 +141,15 @@ def borrador_samples(data_frame):
 # ============================================== GRAFICOS ===================================================== #
 
 # Graficos de dispersion de los datos
-def scattered(df, last_col):
+def scattered(df, last_col, max_x = None, max_7 = None):
     columns = df.columns.to_list()
     for item in columns[:last_col]:
+        if max_x is None:
+            max_x = df[item].index.max()
+        if max_y is None:
+            max_y = df[item].max()
+        plt.xlim(0, max_x)
+        plt.ylim(0, max_y)
         plt.xlabel('Index')
         plt.ylabel(f'Column \'{item}\'')
         plt.xticks(rotation=45, horizontalalignment='center')
@@ -155,11 +161,13 @@ def scattered(df, last_col):
         plt.show()
 
 # Graficos de distribucion (boxplot)
-def boxplot(data_frame):
+# Cuando se llama a esta funcion, se tiene que poner si o si el maximo de columnas a graficar 
+# (7 en el caso de fraudes, y 9 en el de potability)
+def boxplot(data_frame, last_col):
     columnas = data_frame.columns.to_list()
-    fig, ax = plt.subplots(9, 1, figsize=(10, 20))
+    fig, ax = plt.subplots(last_col, 1, figsize=(10, 20))
     fig.subplots_adjust(hspace=0.75)
-    for i in range(9):
+    for i in range(last_col):
         sns.boxplot(x=data_frame[columnas[i]], data=data_frame, ax=ax[i])
     plt.show()
 
@@ -191,8 +199,8 @@ def matrix_corr(df):
     plt.show()
 
 # Pares de graficos en funciones del resto
-def pplot(data_frame):
-    sns.pairplot(data_frame, hue='Potability', corner=True, palette='plasma')
+def pplot(data_frame, hue):
+    sns.pairplot(data_frame, hue=hue, corner=True, palette='plasma')
     plt.show()
 
 # Grafico del entrenamiento de la red (test/train)
