@@ -1,10 +1,8 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.linear_model import LinearRegression
 import math
-
-df = pd.read_csv('card_transdata.csv', sep=',')
 
 # ============================================== SCRIPT DE FUNCIONES ===================================================== #
 
@@ -132,25 +130,25 @@ def borrador_samples(data_frame):
     for index,value in new_df.iterrows():
         if new_df['fraud'][index] == 0:
             indices.append(index)
-        if (index == 850_000):
+        if (index == 820_000):
             newnew_df = new_df.drop(indices)
             return newnew_df
-
+        
 # ============================================================================================================================ #
 
 # ============================================== GRAFICOS ===================================================== #
 
 # Graficos de dispersion de los datos
-def scattered(df, last_col, max_x = None, max_7 = None):
+def scattered(df, last_col, max_x=None, max_y=None):
     columns = df.columns.to_list()
     for item in columns[:last_col]:
         if max_x is None:
             max_x = df[item].index.max()
         if max_y is None:
             max_y = df[item].max()
+        plt.xlabel('Index')
         plt.xlim(0, max_x)
         plt.ylim(0, max_y)
-        plt.xlabel('Index')
         plt.ylabel(f'Column \'{item}\'')
         plt.xticks(rotation=45, horizontalalignment='center')
         plt.minorticks_on()
@@ -161,8 +159,6 @@ def scattered(df, last_col, max_x = None, max_7 = None):
         plt.show()
 
 # Graficos de distribucion (boxplot)
-# Cuando se llama a esta funcion, se tiene que poner si o si el maximo de columnas a graficar 
-# (7 en el caso de fraudes, y 9 en el de potability)
 def boxplot(data_frame, last_col):
     columnas = data_frame.columns.to_list()
     fig, ax = plt.subplots(last_col, 1, figsize=(10, 20))
@@ -171,20 +167,40 @@ def boxplot(data_frame, last_col):
         sns.boxplot(x=data_frame[columnas[i]], data=data_frame, ax=ax[i])
     plt.show()
 
+# Todas las columnas en funcion de una
+def catplot(data_frame, last_col=1, hue=None):
+    if hue == None:
+        return 'No se especifico una columna de comparacion. => hue=\'{columna en funcion de la que se quiera graficar}\''
+    columns = data_frame.columns.to_list()
+    del columns[-1]
+    plt.figure(figsize=(10,5))
+    for item in columns[:last_col]:
+        sns.catplot(x = data_frame[hue], y = data_frame[item], data=data_frame, palette='crest')
+    plt.show()
+
 # Histogramas de los datos
 def histograms(df, last_col):
-    columns = df.columns.to_list()
+    new_df = df.copy()
+    columns = new_df.columns.to_list()
     for item in columns[:last_col]:
-        media = df[item].mean()
-        desv_est = df[item].std()
+        
+        media = new_df[item].mean()
+        desv_est = new_df[item].std()
+        array = new_df[item].to_numpy()
+
         plt.xlabel(f'Column \'{item}\'')
         plt.ylabel('Index')
         plt.xticks(rotation=45, horizontalalignment='center')
         plt.minorticks_on()
         plt.grid()
         plt.title('PLOT PER COLUMN')
-        cont, x, barras = plt.hist(df[item], bins=10, color='slateblue', edgecolor='black', label=item.upper())
-        plt.plot(x, 1/(desv_est*math.sqrt(2*math.pi)) * math.exp(-0.5*((x - media)/desv_est)**2), linewidth=1, color="purple")
+
+        cont, bins, patches = plt.hist(array, color='slateblue', edgecolor='black', density=True, alpha=0.6, label=item.upper())
+        x_densidad = np.linspace(bins[0], bins[-1], 100)
+
+        funcion = 1/(desv_est*np.sqrt(2*np.pi)) * np.exp(-0.5*((x_densidad - media)/desv_est)**2)
+
+        plt.plot(x_densidad, funcion, linewidth=2, color='black')
         plt.legend()
         plt.show()
 
