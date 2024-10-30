@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import math
 
+df = pd.read_csv('./csvs/transf_data.csv', sep=',')
+
 # ============================================== SCRIPT DE FUNCIONES ===================================================== #
 
 # Funcion de descarte
@@ -84,11 +86,16 @@ def limpieza(data_frame):
 def estandarizacion(data_frame):
     new_df = data_frame.copy()
     columnas = data_frame.columns.to_list()
+    # Va a guardar las medias y desv de todas las columnas, se va a usar mas tarde
+    med_lst = []
+    std_lst = []
     for item in columnas[:-1]:
         # media
         media = new_df[item].mean()
+        med_lst.append(media)
         # desviacion estandar
         desv_std = new_df[item].std()
+        std_lst.append(desv_std)
         # lista para guardar los valores escalados
         valores_esc = []
         for value in new_df[item]:
@@ -98,8 +105,19 @@ def estandarizacion(data_frame):
             valores_esc.append(val)
         # mete toda la lista en la columna
         new_df[item] = valores_esc
-    
+    return new_df, med_lst, std_lst
+
+def estandarizacion_muestras(data_frame, medias, std_dev):
+    # A esto hay que pasarle las listas con medias y desv
+    new_df = data_frame.copy()
+    columnas = data_frame.columns.to_list()
+    i = 0
+    for item in columnas:
+        val = new_df[item][0]
+        val_new = ((val - medias[i]) / std_dev[i])
+        new_df[item][0] = val_new
     return new_df
+
 
 # Estandarizacion Robusta
 # Esto se tiene que llamar una vez que no haya NaNs.
@@ -139,16 +157,9 @@ def borrador_samples(data_frame):
 # ============================================== GRAFICOS ===================================================== #
 
 # Graficos de dispersion de los datos
-def scattered(df, last_col, max_x=None, max_y=None):
+def scattered(df, last_col):
     columns = df.columns.to_list()
     for item in columns[:last_col]:
-        if max_x is None:
-            max_x = df[item].index.max()
-        if max_y is None:
-            max_y = df[item].max()
-        plt.xlabel('Index')
-        plt.xlim(0, max_x)
-        plt.ylim(0, max_y)
         plt.ylabel(f'Column \'{item}\'')
         plt.xticks(rotation=45, horizontalalignment='center')
         plt.minorticks_on()
@@ -165,7 +176,7 @@ def boxplot(data_frame, last_col):
     fig.subplots_adjust(hspace=0.75)
     for i in range(last_col):
         sns.boxplot(x=data_frame[columnas[i]], data=data_frame, ax=ax[i])
-    plt.show()
+        plt.show()
 
 # Todas las columnas en funcion de una
 def catplot(data_frame, last_col=1, hue=None):
@@ -210,7 +221,7 @@ def matrix_corr(df):
     matriz_corr = df.corr()
     # Colores para la grafica de correlacion -> https://matplotlib.org/stable/users/explain/colors/colormaps.html
     sns.heatmap(matriz_corr, annot=True, cmap='inferno', linewidths=0.3, vmin=-1)
-    plt.xticks(rotation=45, horizontalalignment='center')
+    plt.xticks(horizontalalignment='center')
     plt.title('Correlation Matrix')
     plt.show()
 
