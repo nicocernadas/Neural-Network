@@ -9,7 +9,7 @@ from keras.api.optimizers import Adam
 # =========================== MODELO TENSORFLOW =============================== #
 
 # Cargar el archivo CSV
-data = pd.read_csv('water_potability.csv')
+data = pd.read_csv('./csvs/water_potability.csv')
 
 # Separar caracteristicas (X) e (y)
 X = data.drop('Potability', axis=1).values  # 'Potability' es la columna objetivo
