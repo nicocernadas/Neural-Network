@@ -5,12 +5,11 @@ from sklearn.neural_network import MLPClassifier
 from sklearn import preprocessing
 from script_funciones import estandarizacion, limpieza
 
-df = pd.read_csv('transf_data.csv', sep=',')
+df = pd.read_csv('./csvs/transf_data.csv', sep=',')
 
 df = limpieza(df)
-df = estandarizacion(df)
+df = estandarizacion(df)[0]
 
-# print(df)
 X = df.values[:, :-1]
 Y = df.values[:, -1]
 
@@ -26,7 +25,7 @@ nn = MLPClassifier(
     random_state=42 # Semilla. Siempre pone los mismos pesos al principio, y divide la red igual. Es para mejor visualizacion
 )
 
-nn.fit(X_train, Y_train) # <- esto no se bien que es
+nn.fit(X_train, Y_train)
 
 print("Puntaje del conjunto de entrenamiento: %f" % nn.score(X_train, Y_train))
 print("Puntaje del conjunto de prueba: %f" % nn.score(X_test, Y_test))
