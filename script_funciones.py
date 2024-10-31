@@ -113,9 +113,9 @@ def estandarizacion_muestras(data_frame, medias, std_dev):
     columnas = data_frame.columns.to_list()
     i = 0
     for item in columnas:
-        val = new_df[item][0]
+        val = new_df.loc[0, item]
         val_new = ((val - medias[i]) / std_dev[i])
-        new_df[item][0] = val_new
+        new_df.loc[0, item] = val_new
     return new_df
 
 
@@ -176,7 +176,7 @@ def boxplot(data_frame, last_col):
     fig.subplots_adjust(hspace=0.75)
     for i in range(last_col):
         sns.boxplot(x=data_frame[columnas[i]], data=data_frame, ax=ax[i])
-        plt.show()
+    plt.show()
 
 # Todas las columnas en funcion de una
 def catplot(data_frame, last_col=1, hue=None):
@@ -219,7 +219,6 @@ def histograms(df, last_col):
 def matrix_corr(df):
     plt.figure(figsize=(10, 8))
     matriz_corr = df.corr()
-    # Colores para la grafica de correlacion -> https://matplotlib.org/stable/users/explain/colors/colormaps.html
     sns.heatmap(matriz_corr, annot=True, cmap='inferno', linewidths=0.3, vmin=-1)
     plt.xticks(horizontalalignment='center')
     plt.title('Correlation Matrix')
