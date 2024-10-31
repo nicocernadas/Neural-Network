@@ -9,7 +9,7 @@ from keras.api.optimizers import Adam
 # =========================== MODELO TENSORFLOW =============================== #
 
 # Cargar el archivo CSV
-data = pd.read_csv('transf_data.csv')
+data = pd.read_csv('./csvs/transf_data.csv')
 
 # Separar (X) y objetivo (y)
 X = data.drop('fraud', axis=1).values
@@ -25,11 +25,11 @@ model = Sequential()
 model.add(BatchNormalization(input_shape=(7,))) # Normaliza solo
 model.add(Dense(4, activation='relu'))  # Capa oculta con 6 neuronas
 
-# Capa de salida con funcion sigmoide para clasificación
+# Capa de salida con funcion sigmoide para clasificacion
 model.add(Dense(1, activation='sigmoid'))
 
 # Compilar el modelo
-model.compile(optimizer=Adam(learning_rate=.01), loss='binary_crossentropy', metrics=['accuracy'])
+model.compile(optimizer=Adam(learning_rate=.03), loss='binary_crossentropy', metrics=['accuracy'])
 
 # Entrenar el modelo
 model.fit(X_train, y_train, epochs=100, batch_size=32, validation_data=(X_test, y_test))
