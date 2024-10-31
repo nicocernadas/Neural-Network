@@ -5,13 +5,13 @@ from sklearn.neural_network import MLPClassifier
 from sklearn import preprocessing
 from script_funciones import carga_nans, descarte, estandarizacion, limpieza
 
-df = pd.read_csv('./water_potability.csv', sep=',')
+df = pd.read_csv('./csvs/water_potability.csv', sep=',')
 
 columnas = df.columns.to_list()
 df_ceros = descarte(df, 'Potability', 0)
 df_unos = descarte(df, 'Potability', 1)
 df = carga_nans(df, df_ceros, df_unos)
-df = estandarizacion(df)
+df = estandarizacion(df)[0]
 
 # print(df)
 X = df.values[:, :-1]
