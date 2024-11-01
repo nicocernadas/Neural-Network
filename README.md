@@ -6,21 +6,22 @@
     - Nicolás Cernadas
 
 ### _**Breve descripcion del trabajo realizado**_
-> En este trabajo práctico se desarrolló una red neuronal para la predicción de la potabilidad del agua, utilizando como base un conjunto de datos proporcionado en un archivo CSV titulado ['Water Potability'](water_potability.csv).
 
-> Tambien desarrollamos una red para un set de datos que predicen si una transaccion de una tarjeta de credito fue o no fraudulenta. Este CSV se titula ['Card Transactions'](card_transdata.csv).
+    En este trabajo práctico se desarrolló una red neuronal para la predicción de la potabilidad del agua, utilizando como base un conjunto de datos proporcionado en un archivo CSV titulado ['Water Potability'](csvs/water_potability.csv).
 
-> El objetivo fue entrenar ambos modelos para clasificar sus respectivas salidas, basado en las características proporcionadas. El proceso comenzó con la limpieza y preparación de los datos. Se manejaron valores ausentes (NaN) y outliers en las diferentes columnas, sustituyendo estos valores con la mediana de cada característica cuando es necesario, para asegurar un entrenamiento más estable.
+    Tambien desarrollamos una red para un set de datos que predicen si una transaccion de una tarjeta de credito fue o no fraudulenta. Este CSV se titula ['Card Transactions'](csvs/card_transdata.csv').
 
--
+    El objetivo fue entrenar ambos modelos para clasificar sus respectivas salidas, basado en las características proporcionadas. El proceso comenzó con la limpieza y preparación de los datos. Se manejaron valores ausentes (NaN) y outliers en las diferentes columnas, sustituyendo estos valores con la mediana de cada característica cuando es necesario, para asegurar un entrenamiento más estable.
 
--
+    La red neuronal fue creada tanto manualmente, como con librerias de Python para corroborar el trabajo realizado. Hay redes de Scikit tanto para el csv de Potabilidad como para el de Transacciones Fraudulentas, asi como tambien hay redes de TensorFlow para ambos 2.
+    
+    En la carpeta de 'Tesis' se encuentran las 2 investigaciones realizadas, con explicasiones mas explayadas sobre los estudios, pero sin incluir codigo.
 
-### _**Version 26/10**_
+    Toda la parte del armado y funciones, aparte de graficos, se encuentra en los Jupyter.
 
-    Nuevo! Ahora hay 2 Data Frames 😎. El de la potabilidad del agua anterior, con un maximo de 60-63% de accuracy, y el nuevo Data Frame de Fraudes a la hora de hacer transacciones con tarjetas de credito, con un accuracy del 96-98%.
+    Muchas gracias!
 
-    Cada uno tiene su propio Jupyter, y van a tener sus respectivas Tesis. Hay redes de ScikitLearn y TensorFlow para ambos sets.
+    
 
 
 
