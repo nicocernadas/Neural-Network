@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn import preprocessing
-from script_funciones import carga_nans, descarte, estandarizacion, limpieza
+from functions_script import carga_nans, descarte, estandarizacion, limpieza
 
 df = pd.read_csv('./csvs/water_potability.csv', sep=',')
 

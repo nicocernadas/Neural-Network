@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn import preprocessing
-from script_funciones import estandarizacion, limpieza
+from functions_script import estandarizacion, limpieza
 
 df = pd.read_csv('./csvs/transf_data.csv', sep=',')
 
