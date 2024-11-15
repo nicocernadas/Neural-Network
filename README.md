@@ -1,29 +1,35 @@
-## Trabajo Practico - Matematica III
+# Practical Project - Mathematics III
 
-### _**Docentes: Prudente Tomás y Bompensieri Josefina**_
-- _*Integrantes del grupo*_
-    - Catalina Correa
-    - Nicolás Cernadas
+### Introduction
+This project was developed as part of the **Mathematics III** course. It involves the creation of neural networks to analyze and predict specific outcomes using two different datasets. The aim was to apply theoretical concepts in a practical setting, combining data preprocessing, neural network implementation, and performance evaluation.
 
-### _**Breve descripcion del trabajo realizado**_
+### Instructors
+- Prudente Tomás  
+- Bompensieri Josefina  
 
-    En este trabajo práctico se desarrolló una red neuronal para la predicción de la potabilidad del agua, utilizando como base un conjunto de datos proporcionado en un archivo CSV titulado ['Water Potability'](csvs/water_potability.csv).
+### Team Members
+- Nicolás Cernadas  
+- Catalina Correa
 
-    Tambien desarrollamos una red para un set de datos que predicen si una transaccion de una tarjeta de credito fue o no fraudulenta. Este CSV se titula ['Card Transactions'](csvs/card_transdata.csv').
+### Project Overview
 
-    El objetivo fue entrenar ambos modelos para clasificar sus respectivas salidas, basado en las características proporcionadas. El proceso comenzó con la limpieza y preparación de los datos. Se manejaron valores ausentes (NaN) y outliers en las diferentes columnas, sustituyendo estos valores con la mediana de cada característica cuando es necesario, para asegurar un entrenamiento más estable.
+#### Water Potability Prediction
+A neural network was built to predict the potability of water using a dataset provided in a CSV file titled ['Water Potability'](csvs/water_potability.csv). The model classifies whether a given sample of water is potable based on the features provided.
 
-    La red neuronal fue creada tanto manualmente, como con librerias de Python para corroborar el trabajo realizado. Hay redes de Scikit tanto para el csv de Potabilidad como para el de Transacciones Fraudulentas, asi como tambien hay redes de TensorFlow para ambos 2.
-    
-    En la carpeta de 'Tesis' se encuentran las 2 investigaciones realizadas, con explicasiones mas explayadas sobre los estudios, pero sin incluir codigo.
+#### Credit Card Fraud Detection
+Another neural network was developed to predict fraudulent transactions in a dataset titled ['Card Transactions'](csvs/card_transdata.csv). The goal was to classify transactions as fraudulent or legitimate based on their characteristics.
 
-    Toda la parte del armado y funciones, aparte de graficos, se encuentra en los Jupyter.
+### Methodology
+1. **Data Cleaning and Preparation**  
+   - Missing values (NaN) and outliers were handled by replacing them with the median of the respective feature to ensure stability during training.
 
-    Muchas gracias!
+2. **Neural Network Implementation**  
+   - Models were created using both manual implementations and Python libraries such as **Scikit-Learn** and **TensorFlow**. This dual approach was used to validate the results and compare performance.  
+   - Separate models were designed for each dataset using both libraries.
 
-    
+3. **Documentation and Analysis**  
+   - Detailed analyses of both datasets and their neural network models are provided in the **Research** folder. These documents include extended explanations of the studies conducted but exclude code.  
+   - Jupyter notebooks include all functions, implementation details, and graphical visualizations.
 
-
-
-
-
+### Additional Information
+Thank you for reviewing this project! Feel free to explore the folders for further details about the work conducted.
